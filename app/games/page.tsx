@@ -1,9 +1,13 @@
 import NavBar from "../components/ui/NavBar"
 import { auth } from "@/lib/auth";
 import Welcome from "../components/ui/Welcome";
+import { redirect } from 'next/navigation';
 
 export default async function GamesPage() {
     const session = await auth();
+    if(!session) {
+        redirect('/')
+    }
     return (
         <main className="flex flex-col h-screen">
             {session && <NavBar {...session}/>}
