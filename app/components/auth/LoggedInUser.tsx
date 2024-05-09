@@ -11,11 +11,15 @@ export default function LoggedInUser(session:Session)
     {
         setToggleMenu(!menu_open);
     }
+    let name = session.user.name;
+
+    if(session.user.nicknameAsked) {
+        name = session.user.nickname;
+    }
     return (
-    
         <div className="relative">
             <div className="hover:bg-slate-300 p-2 rounded cursor-pointer relative" onClick={toggleMenu}>
-                <div className="hidden md:inline">{ session && session.user.name }</div>
+                <div className="hidden md:inline">{ name }</div>
                 { session.user.image && 
                     <Image
                         src={session.user.image}

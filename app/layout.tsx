@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from 'next/font/local'
 import "./globals.css";
+import SessionWrapper from "@/app/components/auth/SessionWrapper"
 
 export const metadata: Metadata = {
   title: "Games - By Cord Marston",
@@ -24,8 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${knight.variable} ${blomberg.variable}`}>
-      <body className="h-screen">{children}</body>
-    </html>
+    <SessionWrapper>
+      <html lang="en" className={`${knight.variable} ${blomberg.variable}`}>
+        <body className="h-screen">{children}</body>
+      </html>
+    </SessionWrapper>
   );
 }

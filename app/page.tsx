@@ -9,7 +9,7 @@ export default async function Home() {
     return redirect("/games")
   }
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <div className="m-auto text-center">
         <h1 className="font-knight text-8xl">Games</h1>
         <span className="py-2 block text-sm">Silly NextJS / React games</span>

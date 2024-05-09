@@ -1,7 +1,7 @@
-import NavBar from "../components/ui/NavBar"
 import { auth } from "@/lib/auth";
 import Welcome from "../components/ui/Welcome";
 import { redirect } from 'next/navigation';
+import LoggedLayout from '@/app/components/ui/LoggedLayout';
 
 export default async function GamesPage() {
     const session = await auth();
@@ -9,13 +9,10 @@ export default async function GamesPage() {
         redirect('/')
     }
     return (
-        <main className="flex flex-col h-screen">
-            {session && <NavBar {...session}/>}
-            <div className="grow flex">
-                <div className="text-center m-auto">
-                    { !session?.user.nicknameAsked && <Welcome {...session}/>}
-                </div>
+        <LoggedLayout>
+            <div className="text-center m-auto">
+                { !session?.user.nicknameAsked && <Welcome/>}
             </div>
-        </main>
+        </LoggedLayout>
     )
 }

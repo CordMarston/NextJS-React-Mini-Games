@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 declare module "next-auth" {
   interface Session {
     user: {
+      name:string,
       nicknameAsked:boolean,
       nickname:string,
     } & DefaultSession["user"]
