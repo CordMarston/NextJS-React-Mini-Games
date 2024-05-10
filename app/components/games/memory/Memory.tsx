@@ -3,10 +3,8 @@ import MemoryCard from './MemoryCard';
 import ScoreBoard from './ScoreBoard';
 import { useEffect, useState } from 'react';
 
-// TOO MANY CLIENT NOTES: https://github.com/prisma/prisma/issues/1983#issuecomment-620621213
-
 export default function MemoryGame() {
-
+    // Color for possibly adding colors to the cards.
     type Card = {
         number: number,
         color: string,
@@ -22,7 +20,7 @@ export default function MemoryGame() {
     const [firstCard, setFirstCard] = useState<Card>({number: 0, color: '', placement: 0})
     const [secondCard, setSecondCard] = useState<Card>({number: 0, color: '', placement: 0});
     const [matchedCards, setMatchedCards] = useState<Card[]>([]);
-
+    const [bestScore, setBestScore] = useState(0);
     function NewGame() {
         setCards(Shuffle());
         setGameStarted(true);
@@ -76,6 +74,13 @@ export default function MemoryGame() {
         setFlipDisabled(false);
     }
 
+    useEffect(() => {
+        if(matchedCards.length == totalCards) {
+            alert('Game Over');
+            SubmitScore();
+        }
+    }, [matchedCards]);
+
     function ResetSelectedCards() {
         // Reset to initial state
         setFirstCard({number: 0, color: '', placement: 0});
@@ -83,9 +88,42 @@ export default function MemoryGame() {
         setFlipDisabled(false);
     }
 
+    function ResetGame() {
+        ResetSelectedCards();
+        setTotalCards(0);
+    }
+
+    async function SubmitScore() {
+        if(totalMoves < bestScore) {
+            setBestScore(totalMoves);
+        }
+        const postScore = await fetch('/api/games/memory', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({game: 'Memory', score: totalMoves}),
+        });
+      
+        const data = await postScore.json();
+    }
+
+    async function GetHighScore() {
+        const getScore = await fetch('/api/games/memory', {
+            method: 'GET'
+        });
+      
+        const data = await getScore.json();
+        if(data.success && data.message) {
+            setBestScore(data.message.score);
+        }
+    }
+
+    GetHighScore();
+
     return (
         <div className="container m-auto max-w-screen-xl text-center">
-            {gameStarted && <ScoreBoard />}
+            {gameStarted && <ScoreBoard currentScore={totalMoves} bestScore={bestScore} />}
             <div className={"text-center" + (gameStarted ? ' grid grid-cols-8 gap-2' : '')}>
                 {gameStarted && cards.map((card, index) =>
                     <MemoryCard card={card} key={index} flipDisabled={(flipDisabled || matchedCards.includes(card))} flipCard={() => (flipDisabled || !matchedCards.includes(card)) && CardClicked(card)} cardShowing={firstCard == card || secondCard == card || matchedCards.includes(card)}/>

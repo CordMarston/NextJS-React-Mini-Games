@@ -17,6 +17,7 @@ model User {
   nickname      String?
   accounts      Account[]
   sessions      Session[]
+  MemoryScores  MemoryScores[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
  
@@ -61,6 +62,14 @@ model VerificationToken {
   expires    DateTime
  
   @@id([identifier, token])
+}
+
+model MemoryScores {
+  id            String          @id @default(cuid())
+  userId        String
+  score         Int
+  createdAt     DateTime @default(now())
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
  
 // Optional for WebAuthn support
