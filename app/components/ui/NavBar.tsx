@@ -16,6 +16,7 @@ export default function NavBar(session:Session) {
                 <nav aria-label="Global">
                     <ul className="flex items-center gap-6 text-sm">
                         <li><Link href="/games/memory" className="block hover:bg-slate-300 p-2 rounded">Memory</Link></li>
+                        <li><Link href="/games/hangman" className="block hover:bg-slate-300 p-2 rounded">Hangman</Link></li>
                         <li><Link href="/games/snake" className="block hover:bg-slate-300 p-2 rounded">Snake</Link></li>
                     </ul>
                 </nav>
