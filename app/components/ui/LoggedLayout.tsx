@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import NavBar from "./NavBar"
+import NavBar from "./NavBar2"
 
 export default async function LoggedLayout({
     children,

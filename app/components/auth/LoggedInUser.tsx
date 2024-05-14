@@ -30,11 +30,11 @@ export default function LoggedInUser(session:Session)
                     />
                 }
             </div>
-            <div id="dropdown" className={`z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-full dark:bg-gray-700 ${menu_open ? 'absolute' : 'hidden'}`}>
+            <div id="dropdown" className={`z-10 bg-white divide-gray-100 rounded-lg shadow w-full min-w-fit dark:bg-gray-700 ${menu_open ? 'absolute' : 'hidden'}`}>
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
 
                 <li>
-                    <a href="#" onClick={() => signOut()} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
+                    <a href="#" onClick={() => signOut()} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-nowrap">Sign out</a>
                 </li>
                 </ul>
             </div>
