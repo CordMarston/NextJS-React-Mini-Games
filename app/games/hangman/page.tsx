@@ -1,13 +1,15 @@
+// import HangmanGame from '@/app/components/games/hangman/Hangman';
 import LoggedLayout from '@/app/components/ui/LoggedLayout';
-import { generate as generateRandomWord } from "random-words";
+import dynamic from 'next/dynamic';
 
-export default function Snake() {
-    const word = generateRandomWord();
+const HangmanGame = dynamic(() => import('@/app/components/games/hangman/Hangman'), { ssr: false })
 
+export default function Hangman() {
     return (
         <LoggedLayout>
             <div className="text-center m-auto">
-                <h1 className="font-blomberg text-8xl">{ word }</h1>
+                <h1 className="font-blomberg text-8xl mb-4">Hangman</h1>
+                <HangmanGame />
             </div>
         </LoggedLayout>
     )
