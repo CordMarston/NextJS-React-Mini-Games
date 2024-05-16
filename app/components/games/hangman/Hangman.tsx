@@ -12,9 +12,10 @@ export default function HangmanGame() {
     const [incorrectLetters, setIncorrectLetters] = useState<string[]>([]);
     const [gameLost, setGameLost] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
+    const [gameWon, setGameWon] = useState(false);
 
-    const letterClicked = (e: React.MouseEvent, letter:string) => {
-        if(gameLost) { return; }
+    const letterClicked = (e: React.MouseEvent | null, letter:string) => {
+        if(gameLost || gameWon) { return; }
         // Make sure it hasn't already been added to either array first.
         let lowercaseLetter = letter.toLowerCase();
         if(word.includes(lowercaseLetter)) {
@@ -30,25 +31,27 @@ export default function HangmanGame() {
 
     const checkWinLoss = () => {
         if(incorrectLetters.length == 6) {
-            alert('You Lost!');
+            console.log('You Lost!');
             setGameLost(true);
             return;
         }
-
         let hasWon = true;
         word.split('').forEach((letter) => {
             if(!correctLetters.includes(letter)) {
                 hasWon = false;
             }
         })
-        
         if(hasWon) {
-            alert('You Won!');
+            console.log('You Won!');
+            setGameWon(true);
         }
     }
 
     useEffect(() => {
-       checkWinLoss()
+        console.log('useEffect');
+        if(gameLost || gameWon) { return ;}
+        checkWinLoss();
+        return () => console.log("Cleanup..");
     }, [correctLetters, incorrectLetters]);
 
     const newGame = () => {
@@ -62,7 +65,7 @@ export default function HangmanGame() {
     }
 
     return (
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between" id="hangman">
             <div className="flex-grow content-center">
                 <Image
                     src={"/images/games/hangman/"+incorrectLetters.length+".png"}
@@ -71,6 +74,7 @@ export default function HangmanGame() {
                     alt="Hangman Base Graphic"
                     priority={true}
                 />
+                { word }
             </div>
             <div className="flex flex-col justify-between py-4">
                 <div className="grow content-center">

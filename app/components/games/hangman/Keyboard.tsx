@@ -1,11 +1,20 @@
 type Props = {
-    keyClicked: (e: React.MouseEvent, letter:string) => void,
+    keyClicked: (e: React.MouseEvent | null, letter:string) => void,
     disabled: boolean
 }
 
 export default function Keyboard({keyClicked, disabled}:Props) {
+
+    // const keyPresses = (e:any) => {
+    //     console.log('keyPresses');
+    //     if(e.key) {
+    //         keyClicked(null, e.key);
+    //     }
+    // }
+    // document.addEventListener('keydown', keyPresses);
+
     return (
-        <div>
+        <div id="keyboard">
             <div>
                 <button className="p-2 bg-gray-100 rounded-lg border border-gray-300 w-8 m-1 bg-white" onClick={(e) => keyClicked(e, 'Q')}>Q</button>
                 <button className="p-2 bg-gray-100 rounded-lg border border-gray-300 w-8 m-1 bg-white" onClick={(e) => keyClicked(e, 'W')}>W</button>
