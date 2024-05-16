@@ -14,6 +14,7 @@ export default function LeaderBoard() {
     }
 
     const [scores, setSCores] = useState<Score[]>([]);
+    const [loading, setLoading] = useState(true);
 
     async function LoadLeaderBoard() {
         const getScores = await fetch('/api/games/leaderboard', {
@@ -24,11 +25,19 @@ export default function LeaderBoard() {
         });
         const topScores = await getScores.json();
         setSCores(topScores.memoryScores);
+        setLoading(false);
     }
 
     useEffect(() => {
         LoadLeaderBoard();
     }, []);
+    if(loading) {
+        return (
+            <div className="cssload-wrap w-60 h-60">
+                <div className="cssload-cssload-spinner"></div>
+            </div>
+        )
+    }
 
     return (
         <div className="bg-white shadow text-left">

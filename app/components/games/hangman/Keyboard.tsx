@@ -1,8 +1,9 @@
 type Props = {
-    keyClicked: (e: React.MouseEvent, letter:string) => void
+    keyClicked: (e: React.MouseEvent, letter:string) => void,
+    disabled: boolean
 }
 
-export default function Keyboard({keyClicked}:Props) {
+export default function Keyboard({keyClicked, disabled}:Props) {
     return (
         <div>
             <div>

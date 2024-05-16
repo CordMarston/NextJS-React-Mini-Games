@@ -8,7 +8,8 @@ export default function Hangman() {
     return (
         <LoggedLayout>
             <div className="text-center m-auto">
-                <h1 className="font-blomberg text-8xl mb-4">Hangman</h1>
+                <h1 className="font-blomberg text-8xl">Hangman</h1>
+                <div className="py-4">Play Hangman to test your vocabulary by guessing letters one at a time to solve the word puzzle. </div>
                 <HangmanGame />
             </div>
         </LoggedLayout>

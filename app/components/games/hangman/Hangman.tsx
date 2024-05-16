@@ -10,8 +10,11 @@ export default function HangmanGame() {
     const [word, setWord] = useState<string>(generateRandomWord().toString().toLowerCase());
     const [correctLetters, setCorrectLetters] = useState<string[]>([]);
     const [incorrectLetters, setIncorrectLetters] = useState<string[]>([]);
+    const [gameLost, setGameLost] = useState(false);
+    const [gameStarted, setGameStarted] = useState(false);
 
     const letterClicked = (e: React.MouseEvent, letter:string) => {
+        if(gameLost) { return; }
         // Make sure it hasn't already been added to either array first.
         let lowercaseLetter = letter.toLowerCase();
         if(word.includes(lowercaseLetter)) {
@@ -26,8 +29,9 @@ export default function HangmanGame() {
     }
 
     const checkWinLoss = () => {
-        if(incorrectLetters.length == word.length) {
+        if(incorrectLetters.length == 6) {
             alert('You Lost!');
+            setGameLost(true);
             return;
         }
 
@@ -47,6 +51,16 @@ export default function HangmanGame() {
        checkWinLoss()
     }, [correctLetters, incorrectLetters]);
 
+    const newGame = () => {
+        setGameStarted(true);
+    }
+
+    if(!gameStarted) {
+        return (
+            <button onClick={newGame} className="mx-auto block py-2 px-4 bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-gray-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">Start Game</button>
+        )
+    }
+
     return (
         <div className="flex flex-row justify-between">
             <div className="flex-grow content-center">
@@ -57,15 +71,14 @@ export default function HangmanGame() {
                     alt="Hangman Base Graphic"
                     priority={true}
                 />
-                {word}
             </div>
             <div className="flex flex-col justify-between py-4">
                 <div className="grow content-center">
                     {word.split('').map((letter, index) => 
-                        <Letter character={letter} showing={correctLetters.includes(letter)} key={index}/>
+                        <Letter character={letter} showing={correctLetters.includes(letter) || gameLost} key={index}/>
                     )}
                 </div>
-                <Keyboard keyClicked={letterClicked} />
+                <Keyboard keyClicked={letterClicked} disabled={gameLost}/>
             </div>
         </div>
     )
