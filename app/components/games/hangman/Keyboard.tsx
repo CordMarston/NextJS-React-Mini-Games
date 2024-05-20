@@ -4,15 +4,6 @@ type Props = {
 }
 
 export default function Keyboard({keyClicked, disabled}:Props) {
-
-    // const keyPresses = (e:any) => {
-    //     console.log('keyPresses');
-    //     if(e.key) {
-    //         keyClicked(null, e.key);
-    //     }
-    // }
-    // document.addEventListener('keydown', keyPresses);
-
     return (
         <div id="keyboard">
             <div>

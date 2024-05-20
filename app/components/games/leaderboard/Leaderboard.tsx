@@ -31,10 +31,12 @@ export default function LeaderBoard() {
     useEffect(() => {
         LoadLeaderBoard();
     }, []);
-    if(loading) {
+     if(loading) {
         return (
-            <div className="cssload-wrap w-60 h-60">
-                <div className="cssload-cssload-spinner"></div>
+            <div className="h-60 w-60">
+                <div className="cssload-wrap w-60 h-60">
+                    <div className="cssload-cssload-spinner"></div>
+                </div>
             </div>
         )
     }

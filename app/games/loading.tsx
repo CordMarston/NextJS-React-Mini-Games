@@ -9,8 +9,10 @@ export default async function Loading() {
     return (
         <main className="flex flex-col h-screen overflow-auto">
             <div className="text-center m-auto">
-                <div className="cssload-wrap">
-                    <div className="cssload-cssload-spinner"></div>
+                <div className="w-60 h-60">
+                    <div className="cssload-wrap">
+                        <div className="cssload-cssload-spinner"></div>
+                    </div>
                 </div>
             </div>
         </main>

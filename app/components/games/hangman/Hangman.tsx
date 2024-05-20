@@ -15,8 +15,7 @@ export default function HangmanGame() {
     const [gameWon, setGameWon] = useState(false);
 
     const letterClicked = (e: React.MouseEvent | null, letter:string) => {
-        if(gameLost || gameWon) { return; }
-        // Make sure it hasn't already been added to either array first.
+        if(gameLost || gameWon) { console.log('exiting'); return; }
         let lowercaseLetter = letter.toLowerCase();
         if(word.includes(lowercaseLetter)) {
             if(!correctLetters.includes(lowercaseLetter)) {
@@ -31,7 +30,6 @@ export default function HangmanGame() {
 
     const checkWinLoss = () => {
         if(incorrectLetters.length == 6) {
-            console.log('You Lost!');
             setGameLost(true);
             return;
         }
@@ -42,48 +40,71 @@ export default function HangmanGame() {
             }
         })
         if(hasWon) {
-            console.log('You Won!');
             setGameWon(true);
         }
     }
 
+    const keyPresses = (e:any) => {
+        if(e.key) {
+            letterClicked(null, e.key);
+        }
+    }
+
     useEffect(() => {
-        console.log('useEffect');
-        if(gameLost || gameWon) { return ;}
+        window.addEventListener('keyup', keyPresses);
         checkWinLoss();
-        return () => console.log("Cleanup..");
-    }, [correctLetters, incorrectLetters]);
+        return () => {
+            window.removeEventListener('keyup', keyPresses);
+        }
+    }, [correctLetters, incorrectLetters, gameWon, gameLost]);
 
     const newGame = () => {
         setGameStarted(true);
+        setCorrectLetters([]);
+        setIncorrectLetters([]);
+        setGameWon(false);
+        setGameLost(false);
+        setWord(generateRandomWord().toString().toLowerCase());
+    }
+
+    const NewGameButton = () => {
+        return (
+            <button onClick={newGame} className="mx-auto block py-2 px-4 bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-gray-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">{gameStarted ? 'Restart Game' : 'New Game'}</button>      
+        );
     }
 
     if(!gameStarted) {
-        return (
-            <button onClick={newGame} className="mx-auto block py-2 px-4 bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-gray-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">Start Game</button>
-        )
+        return <NewGameButton/>
     }
 
     return (
-        <div className="flex flex-row justify-between" id="hangman">
-            <div className="flex-grow content-center">
-                <Image
-                    src={"/images/games/hangman/"+incorrectLetters.length+".png"}
-                    width={300}
-                    height={375}
-                    alt="Hangman Base Graphic"
-                    priority={true}
-                />
-                { word }
-            </div>
-            <div className="flex flex-col justify-between py-4">
-                <div className="grow content-center">
-                    {word.split('').map((letter, index) => 
-                        <Letter character={letter} showing={correctLetters.includes(letter) || gameLost} key={index}/>
-                    )}
+        <div>
+            <div className="flex flex-row justify-between">
+                <div className="flex-grow content-center relative">
+                    <Image
+                        src={"/images/games/hangman/"+(incorrectLetters.length > 6 ? 6 : incorrectLetters.length)+".png"}
+                        width={250}
+                        height={325}
+                        alt="Hangman Base Graphic"
+                        priority={true}
+                    />
+                    {gameWon && <div className="bg-green-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-5 text-white">You Won!</div>}
+                    {gameLost && <div className="bg-red-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-5 text-white">You Lost!</div>}
+                    
                 </div>
-                <Keyboard keyClicked={letterClicked} disabled={gameLost}/>
+                <div className="flex flex-col justify-between py-4">
+                    <div className="grow content-center">
+                        {word.split('').map((letter, index) => 
+                            <Letter character={letter} showing={correctLetters.includes(letter) || gameLost} key={index}/>
+                        )}
+                    </div>
+                    <Keyboard keyClicked={letterClicked} disabled={gameLost}/>
+                </div>
             </div>
+            <div className="pt-4">
+                <NewGameButton/>
+            </div>
+            
         </div>
     )
 }

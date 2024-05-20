@@ -27,7 +27,12 @@ export default function RootLayout({
   return (
     <SessionWrapper>
       <html lang="en" className={`${knight.variable} ${blomberg.variable}`}>
-        <body className="h-screen">{children}</body>
+        <body className="h-screen">
+          {children}
+          <div className="absolute bottom-0 left-0 p-2 bg-slate-300">
+            <a href="https://github.com/CordMarston/games_cordmarston_com" target="_blank"><img src="images/github-logo.png" alt="Github Logo" width="100"/></a>
+          </div>
+        </body>
       </html>
     </SessionWrapper>
   );
